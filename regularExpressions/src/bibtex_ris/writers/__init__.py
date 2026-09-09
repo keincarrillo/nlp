@@ -1,0 +1,1 @@
+"""Writers: convierten una entrada ya parseada a texto de salida"""

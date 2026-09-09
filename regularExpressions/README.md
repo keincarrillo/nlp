@@ -9,11 +9,19 @@ regularExpressions/
 ├── Makefile
 ├── pyproject.toml
 ├── src/bibtex_ris/
-│   ├── converter.py     # parseo y conversion (regex)
-│   ├── latex.py         # desescapado LaTeX a Unicode
-│   └── cli.py           # linea de comandos
+│   ├── converter.py          # fachada: API publica BibtexRisConverter
+│   ├── constants.py          # mapeos de tipos/campos y ordenes de salida
+│   ├── utils.py              # helpers de formato (fechas, paginas, autores)
+│   ├── latex.py              # desescapado LaTeX a Unicode
+│   ├── cli.py                # linea de comandos
+│   ├── parsers/
+│   │   ├── bibtex_parser.py  # lee entradas BibTeX
+│   │   └── ris_parser.py     # lee entradas RIS
+│   └── writers/
+│       ├── bibtex_writer.py  # genera BibTeX desde una entrada RIS
+│       └── ris_writer.py     # genera RIS desde una entrada BibTeX
 └── tests/
-    └── data/            # archivos de entrada (.bib y .ris)
+    └── data/                 # archivos de entrada (.bib y .ris)
 ```
 
 ## Instalacion
