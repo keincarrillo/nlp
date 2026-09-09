@@ -1,4 +1,4 @@
-"""Utilidades para desescapar comandos LaTeX a caracteres unicode"""
+"""Desescapa comandos LaTeX a caracteres unicode"""
 
 # Simbolos LaTeX comunes
 LATEX_SYMBOLS = {
@@ -34,7 +34,7 @@ LATEX_MAP = {**LATEX_SYMBOLS, **LATEX_ACCENTS}
 
 
 def unescape_latex(text):
-    """Reemplaza comandos LaTeX conocidos por su caracter unicode"""
+    """Reemplaza cada comando LaTeX conocido por su caracter unicode"""
     for token, char in LATEX_MAP.items():
         text = text.replace(token, char)
     return text

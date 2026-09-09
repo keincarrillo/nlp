@@ -6,17 +6,17 @@ from .constants import MONTHS, MONTHS_REVERSE
 
 
 def format_line(tag, value):
-    """Compone una linea RIS: 'ETIQUETA  - valor'"""
+    """Compone una linea RIS con el formato 'ETIQUETA  - valor'"""
     return '{}  - {}'.format(tag, value)
 
 
 def split_authors(value):
-    """Divide un campo de autores BibTeX separado por 'and'"""
+    """Divide un campo de autores BibTeX separado por la palabra and"""
     return [name.strip() for name in re.split(r'\s+and\s+', value, flags=re.IGNORECASE)]
 
 
 def split_pages(value):
-    """Divide un rango de paginas 'inicio--fin' en [inicio, fin]"""
+    """Divide un rango de paginas como 'inicio--fin' en [inicio, fin]"""
     parts = [p.strip() for p in re.split(r'--|–|-', value.strip())]
     return [p for p in parts if p] or [value.strip()]
 
@@ -43,7 +43,7 @@ def build_date(year, month=None, day=None):
 
 
 def da_to_month_day(value):
-    """Convierte una fecha DA 'YYYY/MM/DD' en (mes, dia) para BibTeX"""
+    """Convierte una fecha DA del formato YYYY/MM/DD en mes y dia"""
     if not value:
         return None, None
     parts = str(value).split('/')

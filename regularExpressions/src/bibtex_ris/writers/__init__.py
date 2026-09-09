@@ -1,1 +1,1 @@
-"""Writers: convierten una entrada ya parseada a texto de salida"""
+"""Writers que generan el texto de salida de cada formato"""

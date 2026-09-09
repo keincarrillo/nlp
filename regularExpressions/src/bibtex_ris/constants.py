@@ -1,4 +1,4 @@
-"""Constantes del conversor: mapeos de tipos y campos, y ordenes de salida"""
+"""Constantes del conversor con los mapeos de tipos y campos"""
 
 # Tipos de entrada BibTeX a RIS
 TYPES_TO_RIS = {

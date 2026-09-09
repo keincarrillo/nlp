@@ -5,13 +5,13 @@ from ..utils import build_date, format_line, split_keywords, split_pages
 
 
 def bibtex_entry_to_ris(entry):
-    """Convierte una entrada BibTeX a RIS"""
+    """Convierte una entrada BibTeX a texto RIS"""
     ris_type = TYPES_TO_RIS.get(entry.get('type', ''), 'JOUR')
     lines = [format_line('TY', ris_type)]
 
     fields = entry.get('fields', {})
 
-    # Autores y editores como listas
+    # Autores y editores se escriben como listas
     for name in ('author', 'editor'):
         values = fields.get(name, [])
         if isinstance(values, str):
@@ -27,12 +27,13 @@ def bibtex_entry_to_ris(entry):
         date = build_date(year, fields.get('month'), fields.get('day'))
         lines.append(format_line('DA', date))
 
-    # Resto de campos en orden
+    # Escribe los demas campos en orden
     for name in FIELD_ORDER:
         if name not in fields:
             continue
         value = fields[name]
 
+        # Paginas se dividen en SP y EP
         if name == 'pages':
             pages = split_pages(value)
             lines.append(format_line('SP', pages[0]))
@@ -40,6 +41,7 @@ def bibtex_entry_to_ris(entry):
                 lines.append(format_line('EP', pages[1]))
             continue
 
+        # Keywords se escriben una por linea
         if name == 'keywords':
             for kw in split_keywords(value):
                 lines.append(format_line('KW', kw))

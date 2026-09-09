@@ -1,1 +1,1 @@
-"""Parsers: extraen entradas desde los formatos BibTeX y RIS"""
+"""Parsers que leen los formatos BibTeX y RIS"""

@@ -53,7 +53,7 @@ def main(argv=None):
         return 1
 
     # Nombre de salida junto al archivo si no se especifica
-    # (prefijo out. para que make clean lo borre)
+    # usa el prefijo out. para que make clean lo borre
     if not args.output:
         suffix = 'ris' if args.format == 'ris' else 'bib'
         default_name = 'out.' + input_path.stem + '.' + suffix

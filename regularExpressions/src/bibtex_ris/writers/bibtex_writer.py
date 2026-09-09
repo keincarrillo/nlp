@@ -5,7 +5,7 @@ from ..utils import da_to_month_day
 
 
 def ris_entry_to_bibtex(entry):
-    """Convierte una entrada RIS a BibTeX"""
+    """Convierte una entrada RIS a texto BibTeX"""
     ris_type = entry.get('TY', 'JOUR')
     if isinstance(ris_type, list):
         ris_type = ris_type[0]
@@ -27,6 +27,7 @@ def ris_entry_to_bibtex(entry):
         handled.add(tag)
         value = entry[tag]
 
+        # PY separa la fecha en year month y day
         if tag == 'PY':
             add_field('year', value)
             month, day = da_to_month_day(entry.get('DA'))
@@ -37,10 +38,11 @@ def ris_entry_to_bibtex(entry):
                     add_field('day', day)
             continue
 
+        # DA y EP se procesan junto a PY y SP
         if tag in ('DA', 'EP'):
-            # Se procesan junto a PY y SP
             continue
 
+        # SP y EP se juntan en un solo campo pages
         if tag == 'SP':
             pages = str(value)
             if 'EP' in entry:
@@ -49,22 +51,25 @@ def ris_entry_to_bibtex(entry):
             add_field('pages', pages)
             continue
 
+        # JO T2 y BT mapean a journal o booktitle
         if tag in ('JO', 'T2', 'BT'):
             name = {'JO': 'journal', 'T2': 'booktitle', 'BT': 'booktitle'}[tag]
             add_field(name, value)
             continue
 
+        # KW une los valores en una sola lista separada por comas
         if tag == 'KW':
             join = ', '.join(value) if isinstance(value, list) else str(value)
             add_field('keywords', join)
             continue
 
+        # SN usa ISSN para revistas e ISBN para el resto
         if tag == 'SN':
-            # SN no distingue ISSN de ISBN: ISSN para revistas, ISBN para el resto
             name = 'issn' if ris_type == 'JOUR' else 'isbn'
             add_field(name, value)
             continue
 
+        # AU y ED unen los autores con la palabra and
         if tag in ('AU', 'ED'):
             name = 'author' if tag == 'AU' else 'editor'
             join = ' and '.join(value) if isinstance(value, list) else str(value)
@@ -75,7 +80,7 @@ def ris_entry_to_bibtex(entry):
         if bibtex_field:
             add_field(bibtex_field, value if not isinstance(value, list) else value[0])
 
-    # Etiquetas que no estan en el orden canonico
+    # Escribe etiquetas que no estan en el orden canonico
     processed_tags = handled | {
         'TY', 'ID', 'ER', 'PY', 'DA', 'SP', 'EP', 'AU', 'ED',
         'KW', 'SN', 'JO', 'T2', 'BT',
@@ -90,6 +95,7 @@ def ris_entry_to_bibtex(entry):
             value = value[0]
         add_field(bibtex_field, value)
 
+    # Quita la coma del ultimo campo y cierra la entrada
     if lines[-1].endswith(','):
         lines[-1] = lines[-1].rstrip(',')
     lines.append('}')

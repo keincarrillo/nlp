@@ -1,4 +1,4 @@
-"""Fachada del conversor: expone la API publica BibtexRisConverter"""
+"""Fachada del conversor BibTeX a RIS"""
 
 from .constants import (
     BIBTEX_TO_RIS,
@@ -18,12 +18,12 @@ from .writers.ris_writer import bibtex_entry_to_ris
 
 
 class BibtexRisConverter:
-    """Convierte entre los formatos BibTeX y RIS
+    """Convierte entre BibTeX y RIS
 
-    Es una fachada: cada tarea esta delegada en un modulo especifico.
-      - constants: mapeos de tipos y campos.
-      - parsers:   leen BibTeX y RIS.
-      - writers:   generan la salida en cada formato.
+    Delega cada tarea en un modulo
+    - constants guarda los mapeos de tipos y campos
+    - parsers leen los archivos de entrada
+    - writers generan el texto de salida
     """
 
     # Tipos de entrada BibTeX a RIS
@@ -50,56 +50,33 @@ class BibtexRisConverter:
     # Orden de etiquetas al escribir BibTeX
     RIS_FIELD_ORDER = RIS_FIELD_ORDER
 
-    # ------------------------------------------------------------------
-    # Utilidades (delegadas a utils para compatibilidad de API)
-    # ------------------------------------------------------------------
-
     def _build_date(self, year, month=None, day=None):
         """Compone una fecha en formato YYYY/MM/DD"""
         return build_date(year, month, day)
 
     def _da_to_month_day(self, value):
-        """Convierte una fecha DA 'YYYY/MM/DD' en (mes, dia) para BibTeX"""
+        """Convierte una fecha DA en mes y dia para BibTeX"""
         return da_to_month_day(value)
 
-    # ------------------------------------------------------------------
-    # Parser BibTeX
-    # ------------------------------------------------------------------
-
     def parse_bibtex(self, content):
-        """Extrae entradas BibTeX"""
+        """Extrae las entradas BibTeX del texto"""
         return parse_bibtex(content)
 
-    # ------------------------------------------------------------------
-    # Parser RIS
-    # ------------------------------------------------------------------
-
     def parse_ris(self, content):
-        """Extrae entradas RIS"""
+        """Extrae las entradas RIS del texto"""
         return parse_ris(content)
 
-    # ------------------------------------------------------------------
-    # Conversion BibTeX -> RIS
-    # ------------------------------------------------------------------
-
     def bibtex_entry_to_ris(self, entry):
-        """Convierte una entrada BibTeX a RIS"""
+        """Convierte una entrada BibTeX a texto RIS"""
         return bibtex_entry_to_ris(entry)
 
-    # ------------------------------------------------------------------
-    # Conversion RIS -> BibTeX
-    # ------------------------------------------------------------------
-
     def ris_entry_to_bibtex(self, entry):
-        """Convierte una entrada RIS a BibTeX"""
+        """Convierte una entrada RIS a texto BibTeX"""
         return ris_entry_to_bibtex(entry)
-
-    # ------------------------------------------------------------------
-    # Conversion de archivos
-    # ------------------------------------------------------------------
 
     def convert_file(self, input_path, output_path, target_format):
         """Convierte un archivo completo al formato indicado"""
+        # Lee el archivo de entrada
         with open(input_path, 'r', encoding='utf-8-sig') as f:
             content = f.read()
 
@@ -107,16 +84,19 @@ class BibtexRisConverter:
         target = target_format.lower()
 
         if target == 'ris':
+            # BibTeX a RIS
             entries = self.parse_bibtex(content)
             for entry in entries:
                 output_lines.append(self.bibtex_entry_to_ris(entry))
                 output_lines.append('')
         else:
+            # RIS a BibTeX
             entries = self.parse_ris(content)
             for entry in entries:
                 output_lines.append(self.ris_entry_to_bibtex(entry))
                 output_lines.append('')
 
+        # Escribe el archivo de salida
         with open(output_path, 'w', encoding='utf-8') as f:
             f.write('\n'.join(output_lines))
 
