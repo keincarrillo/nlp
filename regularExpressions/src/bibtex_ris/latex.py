@@ -1,6 +1,6 @@
-"""Desescapa comandos LaTeX a caracteres unicode"""
+"""desescapa comandos latex a caracteres unicode"""
 
-# Simbolos LaTeX comunes
+# simbolos latex comunes
 LATEX_SYMBOLS = {
     r"{\&}": '&',
     r"{\%}": '%',
@@ -11,7 +11,7 @@ LATEX_SYMBOLS = {
     r"{\}}": '}',
 }
 
-# Acentos y diacriticos LaTeX a caracteres unicode
+# acentos y diacriticos latex a caracteres unicode
 LATEX_ACCENTS = {
     r"{\'a}": 'á', r"{\'e}": 'é', r"{\'i}": 'í', r"{\'o}": 'ó', r"{\'u}": 'ú',
     r"{\'A}": 'Á', r"{\'E}": 'É', r"{\'I}": 'Í', r"{\'O}": 'Ó', r"{\'U}": 'Ú',
@@ -29,12 +29,12 @@ LATEX_ACCENTS = {
     r'{\v{n}}': 'ň', r'{\v{N}}': 'Ň', r'{\v{e}}': 'ě', r'{\v{E}}': 'Ě',
 }
 
-# Tabla completa para un solo recorrido
+# tabla completa para un solo recorrido
 LATEX_MAP = {**LATEX_SYMBOLS, **LATEX_ACCENTS}
 
 
 def unescape_latex(text):
-    """Reemplaza cada comando LaTeX conocido por su caracter unicode"""
+    """reemplaza cada comando latex conocido por su caracter unicode"""
     for token, char in LATEX_MAP.items():
         text = text.replace(token, char)
     return text

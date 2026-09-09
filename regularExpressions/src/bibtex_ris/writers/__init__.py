@@ -1,1 +1,1 @@
-"""Writers que generan el texto de salida de cada formato"""
+"""writers que generan el texto de salida de cada formato"""

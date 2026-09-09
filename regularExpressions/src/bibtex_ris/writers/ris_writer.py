@@ -1,17 +1,17 @@
-"""Genera texto RIS a partir de una entrada BibTeX parseada"""
+"""genera texto ris a partir de una entrada bibtex parseada"""
 
 from ..constants import BIBTEX_TO_RIS, FIELD_ORDER, TYPES_TO_RIS
 from ..utils import build_date, format_line, split_keywords, split_pages
 
 
 def bibtex_entry_to_ris(entry):
-    """Convierte una entrada BibTeX a texto RIS"""
+    """convierte una entrada bibtex a texto ris"""
     ris_type = TYPES_TO_RIS.get(entry.get('type', ''), 'JOUR')
     lines = [format_line('TY', ris_type)]
 
     fields = entry.get('fields', {})
 
-    # Autores y editores se escriben como listas
+    # autores y editores se escriben como listas
     for name in ('author', 'editor'):
         values = fields.get(name, [])
         if isinstance(values, str):
@@ -20,20 +20,20 @@ def bibtex_entry_to_ris(entry):
         for item in values:
             lines.append(format_line(tag, item))
 
-    # Anio y fecha en formato YYYY/MM/DD
+    # anio y fecha en formato yyyy/mm/dd
     year = fields.get('year')
     if year:
         lines.append(format_line('PY', year))
         date = build_date(year, fields.get('month'), fields.get('day'))
         lines.append(format_line('DA', date))
 
-    # Escribe los demas campos en orden
+    # escribe los demas campos en orden
     for name in FIELD_ORDER:
         if name not in fields:
             continue
         value = fields[name]
 
-        # Paginas se dividen en SP y EP
+        # paginas se dividen en sp y ep
         if name == 'pages':
             pages = split_pages(value)
             lines.append(format_line('SP', pages[0]))
@@ -41,7 +41,7 @@ def bibtex_entry_to_ris(entry):
                 lines.append(format_line('EP', pages[1]))
             continue
 
-        # Keywords se escriben una por linea
+        # keywords se escriben una por linea
         if name == 'keywords':
             for kw in split_keywords(value):
                 lines.append(format_line('KW', kw))

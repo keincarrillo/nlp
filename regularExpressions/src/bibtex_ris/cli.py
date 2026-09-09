@@ -1,4 +1,4 @@
-"""Interfaz de linea de comandos del conversor"""
+"""interfaz de linea de comandos del conversor"""
 
 import argparse
 import sys
@@ -52,7 +52,7 @@ def main(argv=None):
         print('Error: el archivo {} no existe'.format(args.input), file=sys.stderr)
         return 1
 
-    # Nombre de salida junto al archivo si no se especifica
+    # nombre de salida junto al archivo si no se especifica
     # usa el prefijo out. para que make clean lo borre
     if not args.output:
         suffix = 'ris' if args.format == 'ris' else 'bib'

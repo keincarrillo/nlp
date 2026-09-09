@@ -1,6 +1,6 @@
-"""Constantes del conversor con los mapeos de tipos y campos"""
+"""constantes del conversor con los mapeos de tipos y campos"""
 
-# Tipos de entrada BibTeX a RIS
+# tipos de entrada bibtex a ris
 TYPES_TO_RIS = {
     'article': 'JOUR',
     'inproceedings': 'CONF',
@@ -9,10 +9,10 @@ TYPES_TO_RIS = {
     'thesis': 'THES',
 }
 
-# Tipos de entrada RIS a BibTeX
+# tipos de entrada ris a bibtex
 TYPES_TO_BIBTEX = {ris: bib for bib, ris in TYPES_TO_RIS.items()}
 
-# Campos BibTeX a etiquetas RIS
+# campos bibtex a etiquetas ris
 BIBTEX_TO_RIS = {
     'author': 'AU',
     'editor': 'ED',
@@ -33,7 +33,7 @@ BIBTEX_TO_RIS = {
     'url': 'UR',
 }
 
-# Campos RIS a etiquetas BibTeX
+# campos ris a etiquetas bibtex
 RIS_TO_BIBTEX = {
     'AU': 'author',
     'ED': 'editor',
@@ -53,24 +53,24 @@ RIS_TO_BIBTEX = {
     'UR': 'url',
 }
 
-# Nombres de mes a numero
+# nombres de mes a numero
 MONTHS = {
     'jan': '01', 'feb': '02', 'mar': '03', 'apr': '04',
     'may': '05', 'jun': '06', 'jul': '07', 'aug': '08',
     'sep': '09', 'oct': '10', 'nov': '11', 'dec': '12',
 }
 
-# Numero de mes a nombre
+# numero de mes a nombre
 MONTHS_REVERSE = {num: name.title() for name, num in MONTHS.items()}
 
-# Orden de campos al escribir RIS
+# orden de campos al escribir ris
 FIELD_ORDER = [
     'title', 'journal', 'booktitle', 'pages', 'volume', 'number',
     'publisher', 'address', 'edition', 'abstract', 'keywords',
     'issn', 'isbn', 'url', 'doi',
 ]
 
-# Orden de etiquetas al escribir BibTeX
+# orden de etiquetas al escribir bibtex
 RIS_FIELD_ORDER = [
     'AU', 'ED', 'PY', 'DA', 'TI', 'JO', 'T2', 'BT', 'SP',
     'VL', 'IS', 'PB', 'CY', 'ET', 'AB', 'KW', 'SN', 'UR', 'DO',

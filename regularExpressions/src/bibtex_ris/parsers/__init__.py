@@ -1,1 +1,1 @@
-"""Parsers que leen los formatos BibTeX y RIS"""
+"""parsers que leen los formatos bibtex y ris"""

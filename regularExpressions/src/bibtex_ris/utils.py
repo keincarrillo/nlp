@@ -1,4 +1,4 @@
-"""Utilidades de formato compartidas por los writers y el converter"""
+"""utilidades de formato compartidas por los writers y el converter"""
 
 import re
 
@@ -6,28 +6,28 @@ from .constants import MONTHS, MONTHS_REVERSE
 
 
 def format_line(tag, value):
-    """Compone una linea RIS con el formato 'ETIQUETA  - valor'"""
+    """compone una linea ris con el formato 'etiqueta  - valor'"""
     return '{}  - {}'.format(tag, value)
 
 
 def split_authors(value):
-    """Divide un campo de autores BibTeX separado por la palabra and"""
+    """divide un campo de autores bibtex separado por la palabra and"""
     return [name.strip() for name in re.split(r'\s+and\s+', value, flags=re.IGNORECASE)]
 
 
 def split_pages(value):
-    """Divide un rango de paginas como 'inicio--fin' en [inicio, fin]"""
+    """divide un rango de paginas como 'inicio--fin' en [inicio, fin]"""
     parts = [p.strip() for p in re.split(r'--|–|-', value.strip())]
     return [p for p in parts if p] or [value.strip()]
 
 
 def split_keywords(value):
-    """Divide una lista de keywords separada por comas"""
+    """divide una lista de keywords separada por comas"""
     return [k.strip() for k in value.split(',') if k.strip()]
 
 
 def build_date(year, month=None, day=None):
-    """Compone una fecha en formato YYYY/MM/DD"""
+    """compone una fecha en formato yyyy/mm/dd"""
     parts = [str(year), '', '']
     if month:
         key = str(month).strip().lower()
@@ -43,7 +43,7 @@ def build_date(year, month=None, day=None):
 
 
 def da_to_month_day(value):
-    """Convierte una fecha DA del formato YYYY/MM/DD en mes y dia"""
+    """convierte una fecha da del formato yyyy/mm/dd en mes y dia"""
     if not value:
         return None, None
     parts = str(value).split('/')
