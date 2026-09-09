@@ -1,6 +1,6 @@
 # Conversor BibTeX a RIS
 
-Practica de expresiones regulares: convierte referencias bibliograficas entre **BibTeX** (`.bib`) y **RIS** (`.ris`) usando `re` de Python.
+Práctica de expresiones regulares: convierte referencias bibliográficas entre **BibTeX** (`.bib`) y **RIS** (`.ris`) usando `re` de Python.
 
 ## Estructura
 
@@ -9,28 +9,23 @@ regularExpressions/
 ├── Makefile
 ├── pyproject.toml
 ├── src/bibtex_ris/
-│   ├── converter.py          # fachada: API publica BibtexRisConverter
-│   ├── constants.py          # mapeos de tipos/campos y ordenes de salida
-│   ├── utils.py              # helpers de formato (fechas, paginas, autores)
-│   ├── latex.py              # desescapado LaTeX a Unicode
-│   ├── cli.py                # linea de comandos
-│   ├── parsers/
-│   │   ├── bibtex_parser.py  # lee entradas BibTeX
-│   │   └── ris_parser.py     # lee entradas RIS
-│   └── writers/
-│       ├── bibtex_writer.py  # genera BibTeX desde una entrada RIS
-│       └── ris_writer.py     # genera RIS desde una entrada BibTeX
+│   ├── converter.py     # parseo y conversión (regex)
+│   ├── latex.py         # desescapado LaTeX a Unicode
+│   └── cli.py           # línea de comandos
 └── tests/
-    └── data/                 # archivos de entrada (.bib y .ris)
+    ├── data/            # archivos de entrada (.bib)
+    ├── test_converter.py
+    ├── test_latex.py
+    └── test_cli.py
 ```
 
-## Instalacion
+## Instalación
 
 ```bash
 make setup
 ```
 
-Crea `.venv` e instala el paquete (queda el comando `bibtex-ris`).
+Crea `.venv`, instala pytest y el paquete (queda el comando `bibtex-ris`).
 
 ## Uso
 
@@ -43,26 +38,33 @@ Crea `.venv` e instala el paquete (queda el comando `bibtex-ris`).
 ```
 
 - `-f ris|bibtex`: formato de salida (obligatorio).
-- `-o`: archivo de salida. Si se omite, se genera junto al de entrada como `out.<nombre>.ris|bib` (al ejecutar desde el proyecto con un archivo de `tests/data/`, queda en `tests/data/out.*` y `make clean` lo borra).
+- `-o`: archivo de salida. Si se omite, se genera junto al de entrada con sufijo `_convertido`.
 
-Tambien: `make run ARGS="archivo.bib -f ris -o salida.ris"`.
+También: `make run ARGS="archivo.bib -f ris -o salida.ris"`.
 
 ## Makefile
 
-| Objetivo | Descripcion |
-|---|---|
-| `make setup` | Crea el entorno virtual e instala |
-| `make run` | Ejecuta el conversor (`ARGS=...`) |
-| `make demo` | Convierte los archivos de `tests/data/` |
-| `make clean` | Borra caches y archivos generados |
-| `make purge` | Limpia y borra el entorno virtual |
+| Objetivo     | Descripción                             |
+| ------------ | --------------------------------------- |
+| `make setup` | Crea el entorno virtual e instala       |
+| `make test`  | Ejecuta la suite de pruebas             |
+| `make run`   | Ejecuta el conversor (`ARGS=...`)       |
+| `make demo`  | Convierte los archivos de `tests/data/` |
+| `make clean` | Borra caches y archivos generados       |
+| `make purge` | Limpia y borra el entorno virtual       |
 
 ## Salida
 
-RIS con separador de dos espacios y orden canonico `TY, AU, ED, PY, DA, TI, JO/BT, SP, EP, VL, IS, PB, CY, ET, AB, KW, SN, UR, DO, ID, ER`.
+RIS con separador de dos espacios y orden canónico `TY, AU, ED, PY, DA, TI, JO/BT, SP, EP, VL, IS, PB, CY, ET, AB, KW, SN, UR, DO, ID, ER`.
 
-- `DA` = `YYYY/MM/DD` (mes/dia vacios si no existen: `YYYY//`).
-- `pages` → `SP`/`EP`; `keywords` → una `KW` por linea.
+- `DA` = `YYYY/MM/DD` (mes/día vacíos si no existen: `YYYY//`).
+- `pages` → `SP`/`EP`; `keywords` → una `KW` por línea.
 - `ID` (clave) antes de `ER`.
 - `SN` → `issn` (revista) o `isbn` (resto) al volver a BibTeX.
 - Comandos LaTeX conocidos → Unicode (`{\&}` → `&`, `{\v{R}}` → `Ř`).
+
+## Tests
+
+```bash
+make test
+```

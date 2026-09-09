@@ -1,4 +1,4 @@
-"""fachada del conversor bibtex a ris"""
+"""vista del conversor bibtex a ris"""
 
 from .constants import (
     BIBTEX_TO_RIS,
