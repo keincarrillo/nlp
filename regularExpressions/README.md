@@ -13,10 +13,7 @@ regularExpressions/
 │   ├── latex.py         # desescapado LaTeX a Unicode
 │   └── cli.py           # linea de comandos
 └── tests/
-    ├── data/            # archivos de entrada (.bib y .ris)
-    ├── test_converter.py
-    ├── test_latex.py
-    └── test_cli.py
+    └── data/            # archivos de entrada (.bib y .ris)
 ```
 
 ## Instalacion
@@ -25,7 +22,7 @@ regularExpressions/
 make setup
 ```
 
-Crea `.venv`, instala pytest y el paquete (queda el comando `bibtex-ris`).
+Crea `.venv` e instala el paquete (queda el comando `bibtex-ris`).
 
 ## Uso
 
@@ -47,7 +44,6 @@ Tambien: `make run ARGS="archivo.bib -f ris -o salida.ris"`.
 | Objetivo | Descripcion |
 |---|---|
 | `make setup` | Crea el entorno virtual e instala |
-| `make test` | Ejecuta la suite de pruebas |
 | `make run` | Ejecuta el conversor (`ARGS=...`) |
 | `make demo` | Convierte los archivos de `tests/data/` |
 | `make clean` | Borra caches y archivos generados |
@@ -62,11 +58,3 @@ RIS con separador de dos espacios y orden canonico `TY, AU, ED, PY, DA, TI, JO/B
 - `ID` (clave) antes de `ER`.
 - `SN` → `issn` (revista) o `isbn` (resto) al volver a BibTeX.
 - Comandos LaTeX conocidos → Unicode (`{\&}` → `&`, `{\v{R}}` → `Ř`).
-
-## Tests
-
-```bash
-make test
-```
-
-120 pruebas: roundtrip `BibTeX -> RIS -> BibTeX` sobre los archivos de `tests/data/`, unidades del parser y de la salida, desescapado LaTeX y CLI.

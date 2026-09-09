@@ -1,9 +1,8 @@
-.PHONY: help setup install test run demo clean purge
+.PHONY: help setup install run demo clean purge
 
 help:
-	@echo "make setup   - crea el entorno virtual aislado e instala dependencias"
-	@echo "make install - instala el paquete y las dependencias de desarrollo"
-	@echo "make test    - ejecuta la suite de pruebas con pytest"
+	@echo "make setup   - crea el entorno virtual aislado e instala el paquete"
+	@echo "make install - instala el paquete"
 	@echo "make run     - ejecuta el conversor con argumentos ARGS=..."
 	@echo "make demo    - convierte todos los archivos de tests/data/ (BibTeX y RIS)"
 	@echo "make clean   - borra caches y archivos generados"
@@ -20,20 +19,15 @@ $(VENV_PY):
 	$(VENV_PIP) install --upgrade pip
 
 setup: $(VENV_PY)
-	$(VENV_PIP) install -r requirements-dev.txt
 	$(VENV_PIP) install -e .
 
 install: $(VENV_PY)
-	$(VENV_PIP) install -r requirements-dev.txt
 	$(VENV_PIP) install -e .
 
-test: install
-	$(VENV_PY) -m pytest tests -v
-
-run: install
+run: $(BIN)
 	$(BIN) $(ARGS)
 
-demo: install
+demo: $(BIN)
 	@echo "BibTeX -> RIS"
 	@for f in tests/data/*.bib; do \
 		case "$$f" in \
@@ -51,7 +45,6 @@ demo: install
 	@echo "Archivos generados en tests/data/out.*"
 
 clean:
-	rm -rf .pytest_cache
 	find . -name '*.egg-info' -type d -prune -exec rm -rf {} +
 	rm -rf build dist
 	find . -name __pycache__ -type d -prune -exec rm -rf {} +
